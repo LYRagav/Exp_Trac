@@ -1,0 +1,118 @@
+Your mission is to deliver a privacy-first, entirely on-device expenditure-tracking iOS app that lets users log, clean, and analyse receipts with the help of computer-vision OCR and Core ML-powered classification—while never forcing their data into the cloud. To reach that goal you, the coding expert, will build (1) a minimal-viable product focused on rock-solid local functionality and (2) an extensible foundation that unlocks post-MVP chat, sync, and forecasting features.
+What You Must Deliver
+1. Ship an iOS-only React-Native (Expo) application that passes App Review with an initial download < 200 MB to avoid the cellular prompt. (Apple Support Community)
+2. Perform all OCR locally with VNRecognizeTextRequest from Apple Vision—no third-party servers. (Apple Developer)
+3. Classify every line-item on-device using a ≤ 150 MB quantised Core ML model; 4-bit weight support keeps accuracy high while shrinking size. (Apple GitHub)
+4. Encrypt every byte at rest with SQLCipher and protect the key inside the Secure Enclave. (zetetic.net, Apple Developer)
+5. Instrument power, hitch, and memory metrics with MetricKit—only aggregated data leaves the phone. (Apple Developer)
+6. Store receipt images as HEIF and auto-purge originals after 0-7 days to cap disk usage while preserving OCR fidelity. (Cloudinary)
+7. Stage large ML or LLM assets in On-Demand Resource packs (≤ 8 GB per pack on iOS 18) and pre-fetch them only on Wi-Fi and power. (Apple Developer)
+8. Lay groundwork for an on-device 3 B Q4 chat model that runs at ~12–15 tok/s on A13+ devices via llama.cpp/MLC benchmarks. (GitHub)
+
+High-Level Road-Map
+Phase	Deliverables	Guard-Rails
+MVP 0.1	Onboarding ➜ Flexible Entry ➜ OCR/Parser ➜ Review Table ➜ Charts	Entirely offline; local DB only
+MVP 0.2	Key-rotation UI, nightly image GC, MetricKit hooks	Bundle < 200 MB
+Post-MVP I	Natural-language chat with 3 B model; last-write-wins iCloud backup	ODR asset fetch; memory guards
+Post-MVP II	CRDT sync, shared budgets, predictive coach	Add server if needed, still end-to-end encrypted
+Coding Checklist
+* Folder structure: /app React-Native UI, /services TS repositories, /native Swift modules (Vision, Speech, Core ML, Keychain).
+* Feature flags: compile-time PRIVACY_MODE = true; no network code executes when set.
+* Testing: Detox E2E for flows, Jest for repositories, XCTest for native parsers.
+* CI gates: bundle-size check, SQLite migration smoke-run, accessibility snapshots.
+* Performance budget: median parse ≤ 200 ms on A14; energy < 2 % per receipt.
+* Documentation: update this spec with every schema or API change.
+
+Launch Features (MVP)
+Onboarding
+Guides first-time users through currency, budget, category seed, privacy defaults (iCloud sync = off), and generates an encryption key in the Secure Enclave.
+* Currency / locale picker
+* Budget amount & period
+* Starter category tree (editable)
+* Opt-in iCloud backup toggle
+* Keypair creation ➜ stores SQLCipher key wrapped in Secure Enclave key-chain item (developer.apple.com)
+Flexible Expense Entry
+Adds spend data by manual table, camera/screenshot OCR, or voice – all offline.
+* Manual editable grid with inline validation
+* Camera / gallery picker, receipt edge detection
+* Apple Vision OCR pipeline
+* Apple Speech live transcript for voice entry
+Receipt OCR & Parsing
+Uses Apple Vision to extract line items, quantities, unit prices, totals, and shop name, then normalises messy labels with Core ML.
+* VNRecognizeTextRequest on-device (developer.apple.com)
+* Regex & heuristics for weight/quantity lines
+* Confidence < θ ➜ "Ask user" correction flow
+AI Categorisation & Learning
+Maps raw labels ("KRO 2% RF MILK") to friendly names & multi-level categories, learning from every correction.
+* 3 B quantised Core ML model (< 150 MB) delivered via On-Demand Resource (ODR) pack (developer.apple.com, developer.apple.com)
+* Local embedding index; updates on device
+Review & Edit Table
+Spreadsheet-style grid stays editable forever with bulk-edit, undo, and audit trail.
+Dashboard & Charts
+Instant daily / weekly / monthly insights rendered locally.
+* Victory-Native bar / pie / heat-map components
+* Tap-through to item list
+Settings / Profile
+* Manage budgets & categories
+* View / merge learned mappings
+* Export CSV / JSON to Files app
+* Face ID-locked "vault" mode
+Tech Involved
+* React Native + Expo (iOS-only)
+* expo-sqlite + SQLCipher encryption (zetetic.net)
+* Secure Enclave key-wrapping (developer.apple.com)
+* Apple Vision OCR, Apple Speech
+* Core ML quantised model
+* Victory-Native charts
+* EAS Build, Detox, Docker (dev)
+Main Requirements
+* Works 100 % offline by default
+* < 200 MB initial cellular download (discussions.apple.com)
+* IPA < 4 GB after thin-unzip (developer.apple.com)
+* AES-256 SQLCipher, WAL mode
+* Median parse ≤ 200 ms on A14
+* Energy impact ≤ 2 % per receipt
+* WCAG 2.2 AA compliance
+
+Future Features (Post-MVP)
+Chat / Natural-Language Queries
+* On-device 3 B (Q4) LLM via MLC LLM or llama.cpp
+* Streaming answers; unload model on exit
+* Fallback to cloud inference for < A13 devices (opt-in)
+Cloud Backup & Cross-Device Sync
+* End-to-end encrypted iCloud ubiquity container
+* Delta sync; last-write-wins first, migrate to CRDT register merge (arxiv.org)
+Shared Households & Budgets
+* Multiple identities, push-notify shared limits
+Open-Banking Import
+* Plaid connector; auto-match lines to receipts
+Subscription & Bill Tracking
+* Detect recurring vendors; renewal alerts
+Predictive Coach
+* On-device time-series forecast; goal scenarios
+Tech Involved
+* Node + Express microservice for future sync
+* PostgreSQL row-level encryption
+* MLC LLM / llama.cpp engine (github.com, github.com)
+Main Requirements
+* Zero-knowledge keys
+* GDPR export / delete endpoints
+* Horizontal scale → 1 M users
+
+
+List of Architecture Consideration Questions
+Topic	Selected Approach	Notes & Sources
+Encryption-key rotation	Secure Enclave-wrapped key; fallback PRAGMA rekey (developer.apple.com, zetetic.net)	One-touch rotate; hardware isolation
+DB migrations	schema_version table + incremental TS migrations	Runs before first DB read
+Receipt image GC	Store HEIF @ 0.6; nightly purge originals older than user-set 0-7 days; keep 300 px thumbnail (support.apple.com)	Saves ~40 % storage
+Core ML model updates	Ship bug-fix via app update; larger via ODR; verify hash; semver gate	ODR pack ≤ 8 GB (developer.apple.com)
+Sync conflict resolution	Start with timestamp-wins ➜ plan CRDTs	Proven offline strategy (arxiv.org)
+LLM sandboxing	Load 3 B Q4 model on demand; 60 s BG task; abort on memory pressure; refuse < 3 GB RAM devices	3 B fits A13+, ~1 GB RAM (github.com)
+Repository pattern	TypeScript repo layer over expo-sqlite	Enables unit tests w/ in-memory DB
+Performance instrumentation	MetricKit aggregates + os_signpost with private strings (developer.apple.com, forums.developer.apple.com)	Zero PII egress
+Accessibility tests	XCUI "snapshot & diff" VoiceOver labels; Dynamic-Type XXL; 44 pt hit-targets	Fail CI on regressions
+Feature flags & privacy	Compile-time PRIVACY_MODE; all net code behind pre-compiler	Guarantees deterministic privacy
+Running LLMs Locally on iPhone – Practical Limits
+* 3 B Q4 ➜ ~1 GB RAM, 12-15 tok/s on iPhone 11/A13 or later (github.com)
+* 7 B Q4 ➜ 3-4 GB RAM, 15-20 tok/s on iPhone 15 Pro (A17 Pro 8 GB) (github.com)
+* Convert with mlc_llm convert --quantization q4f16; ship in ODR tag, pre-fetch on Wi-Fi; stream tokens to UI, throttle 25 ms per token. 

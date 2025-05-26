@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../dist/out-tsc",
+    "module": "node16",
+    "moduleResolution": "node16",
+    "target": "es2019",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {},
+    "lib": ["es2019", "dom"],
+    "types": ["jest", "detox"]
+  },
+  "include": ["**/*.ts", "**/*.tsx", "jest.config.js"],
+  "exclude": ["node_modules"]
+} 

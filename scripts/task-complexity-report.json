@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "generatedAt": "2025-05-19T00:19:27.810Z",
+    "tasksAnalyzed": 10,
+    "thresholdScore": 5,
+    "projectName": "Taskmaster",
+    "usedResearch": true
+  },
+  "complexityAnalysis": [
+    {
+      "taskId": 1,
+      "taskTitle": "Setup Project Repository and Folder Structure",
+      "complexityScore": 7,
+      "recommendedSubtasks": 10,
+      "expansionPrompt": "Break down the setup process into granular steps: initializing the Expo project, configuring TypeScript, establishing the folder structure, setting up feature flags, integrating EAS Build, Detox, Docker, and documenting the process. Include subtasks for code quality tools, CI/CD, and verification.",
+      "reasoning": "This task involves initializing a modern React Native (Expo) project with a complex folder structure, feature flags, and multiple integrations (EAS Build, Detox, Docker). Each integration has its own setup and configuration requirements, and ensuring everything works together adds to the complexity. The current subtasks are comprehensive, but further granularity (e.g., splitting Docker and CI setup, or breaking documentation into setup, workflow, and troubleshooting) would improve clarity and parallelization."
+    },
+    {
+      "taskId": 2,
+      "taskTitle": "Implement Secure Local Database with SQLCipher",
+      "complexityScore": 9,
+      "recommendedSubtasks": 12,
+      "expansionPrompt": "Expand each phase of secure database implementation: native SQLCipher integration, database schema setup, encryption configuration, Secure Enclave key management, key lifecycle (generation, rotation, backup), performance tuning, migration utilities, comprehensive testing, error handling, and documentation. Add subtasks for biometric integration and fallback strategies.",
+      "reasoning": "This task requires deep expertise in native iOS development, cryptography, secure key management, and database migration. Integrating SQLCipher with Secure Enclave, handling key rotation, and ensuring robust error recovery are all advanced topics. The current subtasks are detailed, but additional granularity (e.g., separating biometric authentication, fallback for key loss, and migration edge cases) would help manage risk and complexity."
+    },
+    {
+      "taskId": 3,
+      "taskTitle": "Design and Implement Onboarding Flow",
+      "complexityScore": 7,
+      "recommendedSubtasks": 10,
+      "expansionPrompt": "Decompose onboarding into UI/UX design for each screen, state management, navigation logic, secure keypair generation, data persistence, and integration with the secure database. Add subtasks for accessibility, localization, and onboarding analytics.",
+      "reasoning": "The onboarding flow spans multiple screens, each with unique logic and validation, and includes secure keypair generation and data persistence. While the current subtasks cover the main flow, further breakdown (e.g., accessibility, localization, analytics, and error handling) would ensure a robust and user-friendly experience."
+    },
+    {
+      "taskId": 4,
+      "taskTitle": "Implement Flexible Expense Entry",
+      "complexityScore": 8,
+      "recommendedSubtasks": 12,
+      "expansionPrompt": "Expand on each input method (manual, camera, voice) with subtasks for UI, native integration, offline processing, validation, and error handling. Add subtasks for accessibility, user feedback, and synchronization logic.",
+      "reasoning": "This task combines multiple complex input methods (manual, camera with edge detection, OCR, voice recognition) and requires all processing to be offline. Each method involves distinct technical challenges, and integrating them into a seamless workflow increases complexity. Additional subtasks for accessibility, user feedback, and offline/online sync would improve coverage."
+    },
+    {
+      "taskId": 5,
+      "taskTitle": "Develop Receipt OCR & Parsing Pipeline",
+      "complexityScore": 9,
+      "recommendedSubtasks": 13,
+      "expansionPrompt": "Break down the pipeline into image preprocessing, OCR configuration, parsing for standard and custom formats, confidence scoring, user correction UI, storage optimization, purging, API integration, and end-to-end testing. Add subtasks for internationalization, error analytics, and continuous improvement.",
+      "reasoning": "Building a robust OCR and parsing pipeline for receipts involves advanced computer vision, text recognition, parsing algorithms, user correction flows, and efficient storage management. Handling diverse receipt formats and ensuring high accuracy with user correction adds significant complexity. More subtasks for internationalization, analytics, and iterative improvement would help manage this complexity."
+    },
+    {
+      "taskId": 6,
+      "taskTitle": "Integrate Core ML Model for AI Categorization",
+      "complexityScore": 9,
+      "recommendedSubtasks": 14,
+      "expansionPrompt": "Expand on model preparation, quantization, conversion, ODR setup, pre-fetching, embedding management, Swift integration, inference pipeline, update mechanisms, fallback strategies, performance monitoring, multi-function support, and comprehensive testing. Add subtasks for model security and user opt-out.",
+      "reasoning": "Integrating a large, quantized Core ML model via On-Demand Resources, with dynamic updates, embedding management, and fallback logic, is highly complex. It requires expertise in ML, iOS native development, resource management, and performance optimization. Additional subtasks for model security, user opt-out, and update validation would further de-risk the implementation."
+    },
+    {
+      "taskId": 7,
+      "taskTitle": "Build Review & Edit Table and Dashboard",
+      "complexityScore": 7,
+      "recommendedSubtasks": 10,
+      "expansionPrompt": "Decompose into grid component development, bulk-edit, undo/redo, audit trail, charting, data aggregation, filtering, dashboard integration, performance optimization, and accessibility. Add subtasks for export and user customization.",
+      "reasoning": "This task involves building a spreadsheet-like grid with advanced editing, audit, and visualization features. While the subtasks are well-structured, further expansion (e.g., export, user customization, and advanced accessibility) would ensure a comprehensive and maintainable solution."
+    },
+    {
+      "taskId": 8,
+      "taskTitle": "Implement Settings, Profile, and Export Features",
+      "complexityScore": 7,
+      "recommendedSubtasks": 10,
+      "expansionPrompt": "Expand into subtasks for each settings area (budget, categories, mappings), export formats, biometric integration, vault mode, export destinations, and comprehensive testing. Add subtasks for user feedback, accessibility, and localization.",
+      "reasoning": "Settings and export features touch many parts of the app, including security (Face ID, vault), data management, and user experience. The current subtasks are solid, but more granularity (e.g., per export format, user feedback, and accessibility) would improve maintainability and test coverage."
+    },
+    {
+      "taskId": 9,
+      "taskTitle": "Instrument Performance and Power Metrics",
+      "complexityScore": 6,
+      "recommendedSubtasks": 8,
+      "expansionPrompt": "Break down into MetricKit integration, custom metrics, os_signpost instrumentation, privacy filtering, aggregation, reporting, alerting, and compliance verification. Add subtasks for documentation and automated privacy audits.",
+      "reasoning": "While integrating MetricKit and os_signpost is straightforward for experienced iOS developers, ensuring privacy compliance and building robust aggregation/reporting adds moderate complexity. Additional subtasks for documentation and privacy audits would ensure regulatory compliance and maintainability."
+    },
+    {
+      "taskId": 10,
+      "taskTitle": "Prepare for Post-MVP Features and CI/CD",
+      "complexityScore": 7,
+      "recommendedSubtasks": 10,
+      "expansionPrompt": "Expand into groundwork for LLM integration, iCloud sync, CRDTs, CI/CD setup, bundle-size checks, migration testing, accessibility compliance, and documentation. Add subtasks for risk assessment and future-proofing architecture.",
+      "reasoning": "This task is preparatory but covers advanced topics (LLM, CRDTs, iCloud sync) and critical infrastructure (CI/CD, accessibility). While not all features are implemented, the architectural groundwork and compliance checks require careful planning and validation. More subtasks for risk assessment and documentation would help future teams."
+    }
+  ]
+}
