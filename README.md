@@ -91,3 +91,4 @@ ExpTrac is a privacy-focused, offline-first iOS application for tracking expense
 
 -   iOS builds are managed via Expo Application Services (EAS Build).
 -   Refer to `eas.json` for build profiles. # Exp_Trac
+# Exp_Trac
